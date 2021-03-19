@@ -99,6 +99,7 @@ func (s *vmSelector) FindVmsWithAttrValues(attr string,
 	)
 
 	if layoutDesc == nil {
+		// get all integers (vCPU / Memory) which are between [min(resourceRequest, attr), max(resourceRequest, attr)]
 		values, err = s.recommendAttrValues(allProducts, attr, req)
 		if err != nil {
 			return nil, emperror.Wrap(err, "failed to recommend attribute values")
@@ -131,6 +132,7 @@ func (s *vmSelector) FindVmsWithAttrValues(attr string,
 	}
 
 	s.log.Debug("found vms", map[string]interface{}{attr: values, "vms": vms})
+	// all vms whose vm.Cpus/vm.Mem is between the allowed range i.e., [min(resourceRequest, attr), max(resourceRequest, attr)]
 	return vms, nil
 }
 
